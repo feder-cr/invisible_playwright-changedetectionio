@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <title>Invisible Firefox</title>
+  <circle cx="12" cy="12" r="10" fill="#ff7139"/>
+  <path d="M12 4a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z" fill="#fff" opacity="0.85"/>
+  <circle cx="12" cy="12" r="2" fill="#0f1219"/>
+</svg>
