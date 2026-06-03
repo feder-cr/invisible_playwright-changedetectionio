@@ -12,10 +12,12 @@ Backend binary: [feder-cr/invisible_firefox](https://github.com/feder-cr/invisib
 Add to your changedetection.io `EXTRA_PACKAGES` (works for the Docker image, pip install, and the systemd setup):
 
 ```
-EXTRA_PACKAGES="git+https://github.com/feder-cr/invisible_playwright-changedetectionio.git"
+EXTRA_PACKAGES="https://github.com/feder-cr/invisible_playwright-changedetectionio/archive/refs/heads/main.tar.gz"
 ```
 
-The plugin pulls in `invisible_playwright` automatically. On first use the patched Firefox 150 binary is auto-downloaded to your cache (`~/.cache/invisible-playwright/firefox-7/` on Linux, `%LOCALAPPDATA%\invisible-playwright\Cache\firefox-7\` on Windows) and SHA256-verified.
+This installs over plain HTTPS, so it works on the stock changedetection.io Docker image, which does not ship `git`. (A `git+https://...` reference would fail there with "Cannot find command 'git'".)
+
+The plugin pulls in `invisible_playwright` automatically (also over HTTPS, no git needed). On first use the patched Firefox 150 binary is auto-downloaded to your cache (`~/.cache/invisible-playwright/firefox-7/` on Linux, `%LOCALAPPDATA%\invisible-playwright\Cache\firefox-7\` on Windows) and SHA256-verified.
 
 After restart, "Invisible Firefox - Stealth (patched FF 150)" appears in the per-watch Fetch Method dropdown.
 

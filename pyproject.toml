@@ -25,7 +25,7 @@ classifiers = [
 ]
 dependencies = [
     "changedetection.io>=0.45.0",
-    "invisible_playwright @ git+https://github.com/feder-cr/invisible_playwright.git",
+    "invisible_playwright @ https://github.com/feder-cr/invisible_playwright/archive/refs/heads/main.tar.gz",
     "playwright>=1.40.0",
     "loguru",
 ]
