@@ -74,9 +74,9 @@ def register_content_fetcher():
     from changedetectionio.content_fetchers.playwright import capture_full_page_async
 
     class fetcher(Fetcher):
-        fetcher_description = "Invisible Firefox - Stealth (patched FF 150)"
+        fetcher_description = "Invisible Firefox - Stealth (patched Firefox)"
 
-        # The Invisible Firefox page is a standard Playwright Firefox page —
+        # The Invisible Firefox page is a standard Playwright Firefox page,
         # all browser-step / screenshot / xpath features work unchanged.
         supports_browser_steps = True
         supports_screenshots = True
@@ -120,7 +120,7 @@ def register_content_fetcher():
                 'group': 'plugin',
                 'filename': 'invisible-firefox-logo.svg',
                 'alt': 'Using Invisible Firefox (stealth)',
-                'title': 'Invisible Firefox — Stealth Firefox 150',
+                'title': 'Invisible Firefox - Stealth (patched Firefox)',
             }
 
         @classmethod
