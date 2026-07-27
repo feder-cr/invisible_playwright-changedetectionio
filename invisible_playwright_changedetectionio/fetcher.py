@@ -91,7 +91,7 @@ def register_content_fetcher():
             # applicable to Firefox (no CDP). Accepted for API compatibility.
             if custom_browser_connection_url:
                 logger.warning(
-                    "Invisible Firefox fetcher: custom_browser_connection_url is ignored — "
+                    "Invisible Firefox fetcher: custom_browser_connection_url is ignored - "
                     "Firefox is launched locally per fetch"
                 )
 
@@ -190,7 +190,7 @@ def register_content_fetcher():
 
                 browser = await playwright_ctx.firefox.launch(**launch_kwargs)
 
-                # Standard Playwright BrowserContext — all features apply
+                # Standard Playwright BrowserContext - all features apply
                 context = await browser.new_context(
                     accept_downloads=False,
                     bypass_csp=True,
@@ -313,7 +313,7 @@ def register_content_fetcher():
                     raise ScreenshotUnavailable(url=url, status_code=self.status_code)
 
             finally:
-                # Triple cleanup with timeout — mirrors Cloak pattern. Each
+                # Triple cleanup with timeout - mirrors Cloak pattern. Each
                 # close is wrapped so a hang at one layer doesn't block teardown
                 # of the others.
                 try:
@@ -365,7 +365,7 @@ def register_content_fetcher():
 
             Differentiates from the cloak-browser fetcher (which only does
             an import check) by also probing for the Linux shared libraries
-            Firefox needs — exactly the operator footgun dgtlmoon flagged
+            Firefox needs - exactly the operator footgun dgtlmoon flagged
             in dgtlmoon/changedetection.io discussion #4187.
             """
             # 1. Python package + binary cache marker
