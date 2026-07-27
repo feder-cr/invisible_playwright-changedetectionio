@@ -1,29 +1,44 @@
 # invisible_playwright-changedetectionio
 
-[changedetection.io](https://github.com/dgtlmoon/changedetection.io) fetcher plugin that uses [invisible_playwright](https://github.com/feder-cr/invisible_playwright) — a Playwright wrapper around a patched Firefox 150 binary with fingerprint patches applied at the C++ source code level. No JavaScript shims, so anti-bot scripts have nothing to detect.
+A [changedetection.io](https://github.com/dgtlmoon/changedetection.io) fetcher plugin
+backed by [invisible_playwright](https://github.com/feder-cr/invisible_playwright), a
+Playwright wrapper around a patched Firefox whose fingerprint is set in the C++ source
+instead of being injected into the page. There is no JavaScript shim, so there is no
+override for a page to find.
 
-Useful for watches where the standard Playwright fetcher hits Cloudflare, Akamai, Datadome, or hCaptcha walls. Drop-in alternative to the Chromium-based `changedetection.io-cloak-browser` plugin, on the Firefox side.
+Useful for watches where the standard fetcher comes back with a challenge page, an
+interstitial, or an empty body instead of the content you asked for.
 
-Backend repo: [feder-cr/invisible_playwright](https://github.com/feder-cr/invisible_playwright)
-Backend binary: [feder-cr/invisible_firefox](https://github.com/feder-cr/invisible_firefox) (MPL-2.0, same license as Firefox upstream)
+- Backend wrapper: [feder-cr/invisible_playwright](https://github.com/feder-cr/invisible_playwright)
+- Backend engine and binaries: [feder-cr/firefox_antidetect_patch](https://github.com/feder-cr/firefox_antidetect_patch) (MPL-2.0, same licence as Firefox upstream)
+- How the fingerprint surfaces work: [feder-cr.github.io/invisible_playwright](https://feder-cr.github.io/invisible_playwright/)
 
 ## Install
 
-Add to your changedetection.io `EXTRA_PACKAGES` (works for the Docker image, pip install, and the systemd setup):
+Add this to your changedetection.io `EXTRA_PACKAGES`. It works for the Docker image,
+a pip install and the systemd setup:
 
 ```
 EXTRA_PACKAGES="https://github.com/feder-cr/invisible_playwright-changedetectionio/archive/refs/heads/main.tar.gz"
 ```
 
-This installs over plain HTTPS, so it works on the stock changedetection.io Docker image, which does not ship `git`. (A `git+https://...` reference would fail there with "Cannot find command 'git'".)
+This installs over plain HTTPS, so it works on the stock changedetection.io Docker
+image, which does not ship `git`. A `git+https://...` reference fails there with
+"Cannot find command 'git'".
 
-The plugin pulls in `invisible_playwright` automatically (also over HTTPS, no git needed). On first use the patched Firefox 150 binary is auto-downloaded to your cache (`~/.cache/invisible-playwright/firefox-7/` on Linux, `%LOCALAPPDATA%\invisible-playwright\Cache\firefox-7\` on Windows) and SHA256-verified.
+The plugin pulls in `invisible_playwright` automatically, also over HTTPS. On first use
+the patched Firefox is downloaded into the local cache
+(`~/.cache/invisible-playwright/` on Linux,
+`%LOCALAPPDATA%\invisible-playwright\Cache\` on Windows) and verified against its
+SHA256.
 
-After restart, "Invisible Firefox - Stealth (patched FF 150)" appears in the per-watch Fetch Method dropdown.
+After a restart, the stealth entry appears in the per-watch Fetch Method dropdown.
 
 ## System packages (Linux)
 
-Firefox needs the standard set of Linux shared libraries. On the base changedetection.io Docker image they're not all preinstalled. The plugin's `is_ready()` check tells you exactly what's missing the first time you try the fetcher, but for convenience:
+Firefox needs the usual set of Linux shared libraries, and the base changedetection.io
+Docker image does not carry all of them. The plugin's `is_ready()` check names exactly
+what is missing the first time you select the fetcher, but for convenience:
 
 ```
 apt-get install -y libgtk-3-0 libdbus-glib-1-2 libxcomposite1 libxdamage1 \
@@ -31,16 +46,17 @@ apt-get install -y libgtk-3-0 libdbus-glib-1-2 libxcomposite1 libxdamage1 \
                    libpangocairo-1.0-0 libasound2 libatk1.0-0 libatk-bridge2.0-0
 ```
 
-(Windows binaries ship everything inside the archive — no system packages needed.)
+Windows archives ship everything inside, so no system packages are needed there.
 
 ## Supported features
 
-Same as the standard Playwright fetcher:
+The same set as the standard Playwright fetcher:
+
 - Browser steps (recorded interactions)
 - Full-page screenshots
-- xpath / CSS selector content extraction
+- xpath and CSS selector content extraction
 - Custom JS execution
-- Proxy configuration via `playwright_proxy_*` env vars
+- Proxy configuration through the `playwright_proxy_*` environment variables
 
 ## Configuration
 
@@ -54,18 +70,25 @@ Same as the standard Playwright fetcher:
 | `PLAYWRIGHT_SERVICE_WORKERS` | `allow` | `allow` or `block` |
 | `SCREENSHOT_MAX_HEIGHT` | (changedetection default) | Max screenshot height |
 
-## How this compares to other fetcher plugins
+If you use a proxy, leave the browser's locale and timezone alone. The wrapper resolves
+both from the address the session actually leaves through, and overriding one of them
+by hand is how a browser ends up contradicting its own exit point.
 
-| Plugin | Engine | Patch level | Use when |
+## How this compares to the other fetchers
+
+| Plugin | Engine | Where the fingerprint is set | Use when |
 |---|---|---|---|
-| `playwright` (built-in) | Chromium | None | Default for most sites |
-| `changedetection.io-cloak-browser` | Chromium | C++ source | Cloudflare / Akamai on Chromium-friendly targets |
-| **this plugin** | **Firefox 150** | **C++ source** | **Same goal as cloak-browser, on sites that flag Chromium UA** |
+| `playwright` (built-in) | Chromium | nowhere | the default, and right for most sites |
+| `changedetection.io-cloak-browser` | Chromium | C++ source | the target is happier with Chromium |
+| **this plugin** | **Firefox** | **C++ source** | **the same goal, where Chromium-shaped traffic is treated as higher risk** |
 
-The Firefox engine matters when target sites behave differently with Firefox than with Chrome — some anti-bot stacks weight Chromium-shaped traffic as higher risk because most residential-proxy bot traffic is Chromium-based.
+The engine choice matters because a lot of automated traffic is Chromium, so some
+filtering stacks weight it accordingly. Firefox is a smaller share of automation and a
+normal share of real browsing.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT, see [LICENSE](LICENSE).
 
-The patched Firefox binary is distributed under MPL-2.0 (Firefox upstream license).
+The patched Firefox binary is distributed under MPL-2.0, the same licence as Firefox
+upstream.
