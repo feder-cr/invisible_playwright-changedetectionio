@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "invisible-playwright-changedetectionio"
 version = "0.1.0"
-description = "changedetection.io plugin: Firefox-based stealth fetcher backed by invisible_playwright (patched Firefox 150, C++-level fingerprint patches)."
+description = "changedetection.io plugin: a Firefox-based stealth fetcher backed by invisible_playwright. Fingerprint set in the C++ engine, not injected. Install via EXTRA_PACKAGES."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
