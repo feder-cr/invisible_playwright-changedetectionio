@@ -1,13 +1,13 @@
 """changedetection.io plugin: Firefox-based stealth fetcher.
 
 Backend: invisible_playwright (https://github.com/feder-cr/invisible_playwright)
-which drives a patched Firefox 150 binary with fingerprint patches at the
-C++ source code level (https://github.com/feder-cr/invisible_firefox, MPL-2.0,
-same license as Firefox upstream).
+which drives a patched Firefox binary whose fingerprint changes are made in the
+browser's own C++ source (https://github.com/feder-cr/firefox_antidetect_patch,
+MPL-2.0, the same licence as Firefox upstream).
 
-Useful for watches where the standard playwright fetcher hits Cloudflare,
-Akamai, Datadome, or hCaptcha walls. Selected per-watch via the Fetch Method
-dropdown once this package is installed.
+Useful for watches where the standard playwright fetcher is turned away by a
+site's bot protection. Selected per-watch via the Fetch Method dropdown
+once this package is installed.
 
 Install via changedetection.io's EXTRA_PACKAGES env:
 
