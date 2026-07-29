@@ -7,7 +7,9 @@ instead of being injected into the page. There is no JavaScript shim, so there i
 override for a page to find.
 
 Useful for watches where the standard fetcher comes back with a challenge page, an
-interstitial, or an empty body instead of the content you asked for.
+interstitial, or an empty body instead of the content you asked for -
+[a troubleshooting order for exactly that](https://github.com/feder-cr/invisible_playwright/blob/main/docs/playwright-detected-as-bot.md)
+is written up if you want to check what's actually failing before switching fetchers.
 
 - Backend wrapper: [feder-cr/invisible_playwright](https://github.com/feder-cr/invisible_playwright)
 - Backend engine and binaries: [feder-cr/firefox_antidetect_patch](https://github.com/feder-cr/firefox_antidetect_patch) (MPL-2.0, same licence as Firefox upstream)
@@ -72,7 +74,7 @@ The same set as the standard Playwright fetcher:
 
 If you use a proxy, leave the browser's locale and timezone alone. The wrapper resolves
 both from the address the session actually leaves through, and overriding one of them
-by hand is how a browser ends up contradicting its own exit point.
+by hand is [how a browser ends up contradicting its own exit point](https://github.com/feder-cr/invisible_playwright/blob/main/docs/timezone-proxy-mismatch.md).
 
 ## How this compares to the other fetchers
 
@@ -83,8 +85,8 @@ by hand is how a browser ends up contradicting its own exit point.
 | **this plugin** | **Firefox** | **C++ source** | **the same goal, where Chromium-shaped traffic is treated as higher risk** |
 
 The engine choice matters because a lot of automated traffic is Chromium, so some
-filtering stacks weight it accordingly. Firefox is a smaller share of automation and a
-normal share of real browsing.
+filtering stacks weight it accordingly.
+[Firefox is a smaller share of automation and a normal share of real browsing](https://github.com/feder-cr/invisible_playwright/blob/main/docs/firefox-vs-chromium-antidetect.md).
 
 ## License
 
